@@ -33,16 +33,16 @@ POST http://localhost:4000/api/jsonfileupload
 ```
 To post a sample file is available at the parent directory (sample-json-file.json).
 
-#### Json File Upload
+#### Get File Status
 ```
 GET http://localhost:4000/api/filedata
 ```
 To get the list of files and their status.
 
 #### Models
-Car 
+Car & 
 FileData
-Association - one to one
+(Association - one to one)
 
 #### Schema Definition for comparing input JSON
 ```
