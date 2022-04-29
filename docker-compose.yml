@@ -1,0 +1,72 @@
+version: '3.8'
+
+services: 
+  json-fms_ui:
+    command: npm run serve
+    restart: always
+    container_name: json-fms_ui
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports: 
+      - "8080:8080"
+    environment:
+      - VUE_APP_BACKEND=http://localhost:4000/api/
+    networks:
+      -  json-fms-net
+    volumes:
+      -  ./client/src:/usr/app/src
+      -  ./client/public:/usr/app/public
+    depends_on:
+      -  json-fms_api
+    stdin_open: true
+    tty: true
+  json-fms_api:
+    container_name: json-fms_api
+    restart: always
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    command: npm start
+    ports:
+      - "4000:4000"
+    environment:
+      - FILE_PATH=/resources/uploads/
+      - ENV_PORT = 4000
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=fms_db
+      - DB_DIALECT=postgres
+    networks:
+     - json-fms-net
+    volumes:
+    - ./server/app:/usr/app/src
+    depends_on: 
+      - postgres_db
+    links:
+      - postgres_db
+  postgres_db: 
+    container_name: postgres_db
+    image: postgres:14.1-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fms_db
+    networks:
+      - json-fms-net
+    volumes:
+      - db_dir:/var/lib/postgresql/data
+networks:
+  json-fms-net:
+    driver: bridge
+volumes:
+  db_dir:
+    driver: local
+
+  
+    

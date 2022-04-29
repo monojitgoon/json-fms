@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "string",
+    "description": "string",
+    "type": "object",
+    "properties": {
+        "model": {
+            "description": "string",
+            "type": "string"
+        },
+        "year_of_creation": {
+            "description": "string",
+            "type": "number",
+            "minimum": 1886
+        }
+    },
+    "required": [
+        "model",
+        "year_of_creation"
+    ]
+}
